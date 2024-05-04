@@ -2,6 +2,7 @@
 
 using namespace std;
 
+//main function for starting job tracker manager
 int main(){   
     welcome();
     string current_user = "test";
