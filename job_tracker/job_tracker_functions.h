@@ -9,6 +9,7 @@
 #include <string>
 #include <vector>
 
+//constats
 using namespace std;
 
 //Function for splitting a line 
@@ -63,12 +64,12 @@ int format_table(vector<vector<string>> data) {
         }
     }
 
-    int starsAmount = 14;
+    int hashAmount = 14;
     for (int i = 0; i < maxColumnWidths.size(); i++){
-        starsAmount += maxColumnWidths[i];
+        hashAmount += maxColumnWidths[i];
     }
 
-    string stars(starsAmount, '#');
+    string stars(hashAmount, '#');
     // Draw header
     cout << stars << endl;
     cout << "#  ";
@@ -99,7 +100,6 @@ int format_table(vector<vector<string>> data) {
 int write_file(string filename){
     return 0;
 }
-
 
 
 //hash user password
@@ -224,7 +224,7 @@ void welcome(){
 
 int start_screen(string &user) {
     pair<int, string> login = make_pair(1, "");
-    char response;
+    string response;
 
     do {
         cout << "1. Log in" << endl;
@@ -232,20 +232,15 @@ int start_screen(string &user) {
         cout << "3. Quit" << endl;
 
         cout << "$ ";
-        cin.clear();
         cin >> response;
 
-        //check if response is valid
-        if (!isdigit(response)) {
-            //if response is not valid ignore all characters
-            cin.clear();
-            cin.ignore(numeric_limits<streamsize>::max(), '\n');
-            cout << "Invalid input. Please enter a number." << endl;
+        if (response.length() != 1 || !isdigit(response[0])) {
+            cout << "Invalid input. Please enter a number between 1 and 3.\n" << endl;
             continue;
         }
 
         //converting char to int
-        int numeric_response = response - '0';
+        int numeric_response = response[0] - '0';
 
         switch (numeric_response) {
             case 1:
@@ -266,7 +261,7 @@ int start_screen(string &user) {
                 cout << "Goodbye!" << endl;
                 return 2;
             default:
-                cout << "Wrong command" << endl;
+                cout << "Invalid input. Please enter a number between 1 and 3.\n" << endl;
                 break;
         }
     } while (login.first != 0);
@@ -301,10 +296,12 @@ int add_offer(string user){
     string position;
     // string status;
 
-    cout << "Date: "; cin >> date;
-    cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+    cout << "Date: ";
+    getline(cin, date);
+
     cout << "Company: "; 
     getline(cin, company);
+
     cout << "Position: "; 
     getline(cin, position);
     // cout << "Status: "; cin >> status;
@@ -323,7 +320,7 @@ int add_offer(string user){
     // Write data to the file
     int cnt = 1;
     for (vector<string> position : data){
-        outputFile << cnt << ";" << position[1] << ";" << position[2] << ";" << position[3] <<" ;" << position[4]<< endl;
+        outputFile << cnt << ";" << position[1] << ";" << position[2] << ";" << position[3] <<";" << position[4]<< endl;
         cnt++;
     }
 
@@ -376,6 +373,7 @@ int update_offer(string user){
     string id;
     cout << "Which offer do you want to update? (id) $ ";
     cin >> id;
+    cin.ignore(numeric_limits<streamsize>::max(), '\n');
 
     vector<vector<string>> data;
     
@@ -405,18 +403,19 @@ int update_offer(string user){
         cnt++;
         }
         else{
-            string columns[4] = {new_date, new_company, new_position, new_status};
+            string new_values[4] = {new_date, new_company, new_position, new_status};
+            string prompts[4] = {"date", "company", "position", "status"};
 
-            for (int i = 0; i < 4; i++){
-                cout << "OLD:  " << position[i + 1] <<endl;
-                cout << "NEW $ ";
-                getline(cin, columns[i]);
-                if (new_date.empty()) {
-                    new_date = position[i + 1];
+            for (int i = 0; i < 4; ++i) {
+                cout << "OLD " << prompts[i] << ": " << position[i + 1] << endl;
+                cout << "NEW " << prompts[i] << " $ ";
+                getline(cin, new_values[i]);
+                if (new_values[i].empty()) {
+                    new_values[i] = position[i + 1];
                 }
             }
 
-            outputFile << cnt << ";" << new_date << ";" << new_company << ";" << new_position <<" ;" << new_status<< endl;
+            outputFile << cnt << ";" << new_values[0] << ";" << new_values[1] << ";" << new_values[2] << ";" << new_values[3] << endl;
         }
     }
 
@@ -430,7 +429,7 @@ int focus_group(string user){
 }
 
 int user_screen(string user){
-    char response;
+    string response;
 
     do {
         cout << "1. See offers" << endl;
@@ -445,16 +444,15 @@ int user_screen(string user){
         cin >> response;
 
         //check if response is valid
-        if (!isdigit(response)) {
-            //if response is not valid ignore all characters
-            cin.clear();
-            cin.ignore(numeric_limits<streamsize>::max(), '\n');
-            cout << "Invalid input. Please enter a number." << endl;
+        if (response.length() != 1 || !isdigit(response[0])) {
+            cout << "Invalid input. Please enter a number between 1 and 3.\n" << endl;
             continue;
         }
 
         //converting char to int
-        int numeric_response = response - '0';
+        int numeric_response = response[0] - '0';
+
+        cin.ignore(numeric_limits<streamsize>::max(), '\n');
 
         switch (numeric_response) {
             case 1:
@@ -479,7 +477,7 @@ int user_screen(string user){
                 cout << "Goodbye!" << endl;
                 return 2;
             default:
-                cout << "Wrong command" << endl;
+                cout << "Invalid input. Please enter a number between 1 and 3.\n" << endl;
                 break;
         }
     } while (true);

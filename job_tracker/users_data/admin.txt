@@ -1,0 +1,5 @@
+1;25.05.2023;Google;Engineer  ;Reject
+2;23.04.2024;Google;Software Engineer  ;Waitlist
+3;17.02.2012;Edifier;Audio tester ;Rejected
+4;23.06.2023;Tesla;Gamer;Rjected
+4;23.05.2032;Google;Gamer ;Waitlist
