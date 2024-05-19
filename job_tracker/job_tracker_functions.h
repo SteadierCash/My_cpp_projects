@@ -32,6 +32,17 @@ vector<string> split(string s){
 }
 
 
+//validate if inputed string is correct that is if it don;t have ';' value
+bool validate_string(string s){
+
+    for (char c: s){
+        if (c == ';'){
+            return false;
+        }
+    }
+    return true;
+}
+
 //reading data from given file to given location
 int read_file(string filename, vector<vector<string>> &data){
     ifstream inputFile;
@@ -56,6 +67,7 @@ int read_file(string filename, vector<vector<string>> &data){
 
 //Transforming data to table
 int format_table(vector<vector<string>> data) {
+
     // Calculate the maximum width for each column
     vector<size_t> maxColumnWidths(data[0].size(), 0);
     for (const auto& row : data) {
@@ -161,6 +173,11 @@ pair<int , string> add_new_user(){
         cout << "Login: ";
         cin >> new_login;
 
+        if (!validate_string(new_login)){
+            cout << "Login cannot consist of the ';' symbol" <<endl;
+            continue;
+        }
+
         for (vector<string> user : data){
             if (user[0] == new_login){
                 cout << "This login is taken. Please choose another one" <<endl;
@@ -172,8 +189,18 @@ pair<int , string> add_new_user(){
         }
     }
 
-    cout << "Password: ";
-    cin >> new_password; 
+    while (true)
+    {
+        cout << "Password: ";
+        cin >> new_password; 
+
+        if (!validate_string(new_password)){
+            cout << "Password cannot consist of the ';' symbol" <<endl;
+            continue;
+        } else {
+            break;
+        }
+    }
 
     // Open a file for writing
     ofstream outputFile("passwords.txt");
@@ -214,6 +241,7 @@ int log_out(){
 }
 
 
+//Print logo
 void welcome(){
     cout << "######################" << endl;
     cout << "# JOB OFFERS MANAGER #" << endl;
@@ -222,6 +250,7 @@ void welcome(){
 }
 
 
+//print start screen
 int start_screen(string &user) {
     pair<int, string> login = make_pair(1, "");
     string response;
@@ -270,6 +299,7 @@ int start_screen(string &user) {
 }
 
 
+//Show offers of logged user
 int show_offers(string user){
     // readign test file
     vector<vector<string>> data;
@@ -278,7 +308,7 @@ int show_offers(string user){
         return 1;
 
     format_table(data);
-    cout << endl;
+    // cout << endl;
 
     return 0;
 }
@@ -305,7 +335,7 @@ int add_offer(string user){
     cout << "Position: "; 
     getline(cin, position);
     // cout << "Status: "; cin >> status;
-    cout << endl;
+    // cout << endl;
 
 
     // Open a file for writing
@@ -357,7 +387,7 @@ int delete_offer(string user){
     int cnt = 1;
     for (vector<string> position : data){
         if (position[0] != id){
-        outputFile << cnt << ";" << position[1] << ";" << position[2] << ";" << position[3] <<" ;" << position[4]<< endl;
+        outputFile << cnt << ";" << position[1] << ";" << position[2] << ";" << position[3] <<";" << position[4]<< endl;
         cnt++;
         }
     }
@@ -399,8 +429,7 @@ int update_offer(string user){
     int cnt = 1;
     for (vector<string> position : data){
         if (position[0] != id){
-        outputFile << cnt << ";" << position[1] << ";" << position[2] << ";" << position[3] <<" ;" << position[4]<< endl;
-        cnt++;
+        outputFile << cnt << ";" << position[1] << ";" << position[2] << ";" << position[3] <<";" << position[4]<< endl;
         }
         else{
             string new_values[4] = {new_date, new_company, new_position, new_status};
@@ -417,6 +446,8 @@ int update_offer(string user){
 
             outputFile << cnt << ";" << new_values[0] << ";" << new_values[1] << ";" << new_values[2] << ";" << new_values[3] << endl;
         }
+
+        cnt++;
     }
 
     // Close the file
@@ -432,6 +463,7 @@ int user_screen(string user){
     string response;
 
     do {
+        cout << "\n";
         cout << "1. See offers" << endl;
         cout << "2. Add offer" <<endl;
         cout << "3. Delete offer" << endl;
