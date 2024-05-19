@@ -32,16 +32,29 @@ vector<string> split(string s){
 }
 
 
-//validate if inputed string is correct that is if it don;t have ';' value
-bool validate_string(string s){
+//Take valid string from user that is - it does not consist of ';' symbol  
+string take_valid_string(string message){
+    string user_input; 
 
-    for (char c: s){
-        if (c == ';'){
-            return false;
+    bool isStringValid = false;
+
+    while (!isStringValid){
+        cout << message;
+        getline(cin, user_input);
+
+        for (char c: user_input){
+            if (c == ';'){
+                cout << "Value cannot consist of the ';' symbol" <<endl;
+                isStringValid = false;
+                break;
+            } else {
+                isStringValid = true;
+            }
         }
     }
-    return true;
+    return user_input;
 }
+
 
 //reading data from given file to given location
 int read_file(string filename, vector<vector<string>> &data){
@@ -170,13 +183,7 @@ pair<int , string> add_new_user(){
     bool login_exists = true;
     while (login_exists)
     {
-        cout << "Login: ";
-        cin >> new_login;
-
-        if (!validate_string(new_login)){
-            cout << "Login cannot consist of the ';' symbol" <<endl;
-            continue;
-        }
+        new_login = take_valid_string("Login: ");
 
         for (vector<string> user : data){
             if (user[0] == new_login){
@@ -189,18 +196,7 @@ pair<int , string> add_new_user(){
         }
     }
 
-    while (true)
-    {
-        cout << "Password: ";
-        cin >> new_password; 
-
-        if (!validate_string(new_password)){
-            cout << "Password cannot consist of the ';' symbol" <<endl;
-            continue;
-        } else {
-            break;
-        }
-    }
+    new_password = take_valid_string("Password: ");
 
     // Open a file for writing
     ofstream outputFile("passwords.txt");
@@ -268,6 +264,8 @@ int start_screen(string &user) {
             continue;
         }
 
+        cin.ignore(numeric_limits<streamsize>::max(), '\n');
+
         //converting char to int
         int numeric_response = response[0] - '0';
 
@@ -326,17 +324,9 @@ int add_offer(string user){
     string position;
     // string status;
 
-    cout << "Date: ";
-    getline(cin, date);
-
-    cout << "Company: "; 
-    getline(cin, company);
-
-    cout << "Position: "; 
-    getline(cin, position);
-    // cout << "Status: "; cin >> status;
-    // cout << endl;
-
+    date = take_valid_string("Date: ");
+    company = take_valid_string("Company: ");
+    position = take_valid_string("Position: ");
 
     // Open a file for writing
     ofstream outputFile("users_data/" + user + ".txt");
@@ -399,6 +389,7 @@ int delete_offer(string user){
 
 
 //update data
+// TODO add warning about wrong input of id 
 int update_offer(string user){
     string id;
     cout << "Which offer do you want to update? (id) $ ";
@@ -437,8 +428,9 @@ int update_offer(string user){
 
             for (int i = 0; i < 4; ++i) {
                 cout << "OLD " << prompts[i] << ": " << position[i + 1] << endl;
-                cout << "NEW " << prompts[i] << " $ ";
-                getline(cin, new_values[i]);
+
+                new_values[i] = take_valid_string("NEW " + prompts[i] + ": ");
+
                 if (new_values[i].empty()) {
                     new_values[i] = position[i + 1];
                 }
@@ -455,6 +447,8 @@ int update_offer(string user){
     return 0;
 }
 
+
+//constist of non rejected and non waitlist offers
 int focus_group(string user){
     return 0;
 }
