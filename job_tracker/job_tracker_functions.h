@@ -80,9 +80,19 @@ int read_file(string filename, vector<vector<string>> &data){
 
 //Transforming data to table
 int format_table(vector<vector<string>> data) {
+    if (data.size() == 0){
+        cout << "There is no data available" << endl;
+        return 1;
+    }
+    vector<string> header = {"ID", "DATE", "COMPANY", "POSITION", "STATUS"};
 
     // Calculate the maximum width for each column
     vector<size_t> maxColumnWidths(data[0].size(), 0);
+
+    for (size_t i = 0; i < header.size(); i++) {
+            maxColumnWidths[i] = max(maxColumnWidths[i], header[i].length());
+        }
+
     for (const auto& row : data) {
         for (size_t i = 0; i < row.size(); i++) {
             maxColumnWidths[i] = max(maxColumnWidths[i], row[i].length());
@@ -99,9 +109,7 @@ int format_table(vector<vector<string>> data) {
     cout << stars << endl;
     cout << "#  ";
 
-    string header[5] = {"ID", "DATE", "COMPANY", "POSITION", "STATUS"};
-
-    for (size_t i = 0; i < sizeof(header) / sizeof(header[0]); i++) {
+    for (size_t i = 0; i < header.size(); i++) {
             cout << left << setw(maxColumnWidths[i] + 2) << header[i];
     }
     cout << "#" << endl;
@@ -252,7 +260,7 @@ int start_screen(string &user) {
     string response;
 
     do {
-        cout << "1. Log in" << endl;
+        cout << "\n1. Log in" << endl;
         cout << "2. Add new user" <<endl;
         cout << "3. Quit" << endl;
 
@@ -450,8 +458,23 @@ int update_offer(string user){
 
 //constist of non rejected and non waitlist offers
 int focus_group(string user){
+    vector<vector<string>> data;
+    vector<vector<string>> focusGroup;
+
+    if (read_file("users_data/" + user + ".txt", data) != 0)
+        return 1;
+
+    for (vector<string> row :data){
+        if(row[row.size() - 1] != "Rejected" && row[row.size() - 1] != "Waitlist"){
+            focusGroup.push_back(row);
+        }
+    }
+
+    format_table(focusGroup);
+
     return 0;
 }
+
 
 int user_screen(string user){
     string response;
@@ -470,6 +493,7 @@ int user_screen(string user){
         cin >> response;
 
         //check if response is valid
+        
         if (response.length() != 1 || !isdigit(response[0])) {
             cout << "Invalid input. Please enter a number between 1 and 3.\n" << endl;
             continue;
@@ -495,10 +519,9 @@ int user_screen(string user){
                 break;
             case 5:
                 focus_group(user);
-                return 2;
+                break;
             case 6:
-                log_out();
-                return 2;
+                return 1;
             case 7:
                 cout << "Goodbye!" << endl;
                 return 2;

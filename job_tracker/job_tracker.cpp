@@ -5,7 +5,7 @@ using namespace std;
 //main function for starting job tracker manager
 int main(){   
     welcome();
-    string current_user = "test";
+    string current_user;
 
     if (start_screen(current_user) == 2){
         return 0;
