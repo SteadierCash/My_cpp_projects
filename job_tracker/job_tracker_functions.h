@@ -427,56 +427,6 @@ int focus_group(string user){
     return 0;
 }
 
-//print start screen
-int start_screen(string &user) {
-    pair<int, string> login = make_pair(1, "");
-    string response;
-
-    do {
-        cout << "\n1. Log in" << endl;
-        cout << "2. Add new user" <<endl;
-        cout << "3. Quit" << endl;
-
-        cout << "$ ";
-        cin >> response;
-
-        if (response.length() != 1 || !isdigit(response[0])) {
-            cout << "Invalid input. Please enter a number between 1 and 3.\n" << endl;
-            continue;
-        }
-
-        cin.ignore(numeric_limits<streamsize>::max(), '\n');
-
-        //converting char to int
-        int numeric_response = response[0] - '0';
-
-        switch (numeric_response) {
-            case 1:
-                login = log_in();
-                if (login.first == 0){
-                    user = login.second; 
-                    break;
-                }
-                break;
-            case 2:
-                login = add_new_user();
-                if (login.first == 0){
-                    user = login.second; 
-                    break;
-                }
-                break;
-            case 3:
-                cout << "Goodbye!" << endl;
-                return 2;
-            default:
-                cout << "Invalid input. Please enter a number between 1 and 3.\n" << endl;
-                break;
-        }
-    } while (login.first != 0);
-
-    return 0;
-}
-
 
 int user_screen(string user){
     string response;
@@ -532,6 +482,58 @@ int user_screen(string user){
                 break;
         }
     } while (true);
+
+    return 0;
+}
+
+//print start screen
+int start_screen(string &user) {
+    pair<int, string> login = make_pair(1, "");
+    string response;
+
+    do {
+        cout << "\n1. Log in" << endl;
+        cout << "2. Add new user" <<endl;
+        cout << "3. Quit" << endl;
+
+        cout << "$ ";
+        cin >> response;
+
+        if (response.length() != 1 || !isdigit(response[0])) {
+            cout << "Invalid input. Please enter a number between 1 and 3.\n" << endl;
+            continue;
+        }
+
+        cin.ignore(numeric_limits<streamsize>::max(), '\n');
+
+        //converting char to int
+        int numeric_response = response[0] - '0';
+
+        switch (numeric_response) {
+            case 1:
+                login = log_in();
+                if (login.first == 0){
+                    user = login.second; 
+                    user_screen(user);
+                    break;
+                }
+                break;
+            case 2:
+                login = add_new_user();
+                if (login.first == 0){
+                    user = login.second; 
+                    user_screen(user);
+                    break;
+                }
+                break;
+            case 3:
+                cout << "Goodbye!" << endl;
+                return 2;
+            default:
+                cout << "Invalid input. Please enter a number between 1 and 3.\n" << endl;
+                break;
+        }
+    } while (login.first != 0);
 
     return 0;
 }

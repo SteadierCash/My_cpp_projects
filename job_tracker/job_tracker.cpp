@@ -11,7 +11,7 @@ int main(){
         return 0;
     }
 
-    user_screen(current_user);
+    // user_screen(current_user);
 
     return 0;
 }
