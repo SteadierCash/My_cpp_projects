@@ -254,9 +254,6 @@ void welcome(){
 }
 
 
-
-
-
 //Show offers of logged user
 int show_offers(string user){
     // readign test file
@@ -314,10 +311,6 @@ int add_offer(string user){
 
 //delate job offer
 int delete_offer(string user){
-    string id;
-    cout << "Which offer do you want to delete? (id) $ ";
-    cin >> id;
-
     vector<vector<string>> data;
     
     if (read_file("users_data/" + user + ".txt", data) != 0)
@@ -332,6 +325,14 @@ int delete_offer(string user){
         cout << "Error opening the file." << endl;
         return 1;
     }
+
+    if (data.size() == 0){
+        cout << "There is no data available" << endl;
+        return 1;
+    }
+    string id;
+    cout << "Which offer do you want to delete? (id) $ ";
+    cin >> id;
     
     // Write data to the file
     int cnt = 1;
@@ -351,11 +352,6 @@ int delete_offer(string user){
 //update data
 // TODO add warning about wrong input of id 
 int update_offer(string user){
-    string id;
-    cout << "Which offer do you want to update? (id) $ ";
-    cin >> id;
-    cin.ignore(numeric_limits<streamsize>::max(), '\n');
-
     vector<vector<string>> data;
     
     if (read_file("users_data/" + user + ".txt", data) != 0)
@@ -370,6 +366,16 @@ int update_offer(string user){
         cout << "Error opening the file." << endl;
         return 1;
     }
+
+    if (data.size() == 0){
+        cout << "There is no data available" << endl;
+        return 1;
+    }
+
+    string id;
+    cout << "Which offer do you want to update? (id) $ ";
+    cin >> id;
+    cin.ignore(numeric_limits<streamsize>::max(), '\n');
     
     // Write data to the file
     string new_date;
@@ -476,7 +482,7 @@ int user_screen(string user){
                 return 1;
             case 7:
                 cout << "Goodbye!" << endl;
-                return 2;
+                return 0;
             default:
                 cout << "Invalid input. Please enter a number between 1 and 3.\n" << endl;
                 break;
@@ -514,7 +520,7 @@ int start_screen(string &user) {
                 login = log_in();
                 if (login.first == 0){
                     user = login.second; 
-                    user_screen(user);
+                    login.first = user_screen(user);
                     break;
                 }
                 break;
@@ -522,7 +528,7 @@ int start_screen(string &user) {
                 login = add_new_user();
                 if (login.first == 0){
                     user = login.second; 
-                    user_screen(user);
+                    login.first = user_screen(user);
                     break;
                 }
                 break;
