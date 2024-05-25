@@ -77,6 +77,39 @@ int read_file(string filename, vector<vector<string>> &data){
     return 0;
 }
 
+//reading data from given file to given location
+int read_file(string filename, vector<vector<string>> &data, vector<string> doNotInclude){
+    ifstream inputFile;
+    inputFile.open(filename);
+
+    if (!inputFile.is_open()){
+        cout << "Error opening a file " << filename << endl;
+        return 1;
+    }
+    
+    //reading and splitting data from file
+    string line;
+    
+    while (getline(inputFile, line)){
+        vector<string> splitedLine = split(line);
+        bool include = true;
+
+        for (string status : doNotInclude){
+            if (splitedLine[splitedLine.size() - 1] == status){
+                include = false;
+            }
+        }
+
+        if (include){
+            data.push_back(splitedLine);
+        }
+        
+    }
+
+    inputFile.close();
+    return 0;
+}
+
 
 //Transforming data to table
 int format_table(vector<vector<string>> data) {
@@ -127,13 +160,6 @@ int format_table(vector<vector<string>> data) {
 
     return 0;
 }
-
-
-//writing new job offer
-int write_file(string filename){
-    return 0;
-}
-
 
 //hash user password
 string hash_passwd(string passwd){
@@ -236,12 +262,6 @@ pair<int , string> add_new_user(){
     newUserFile.close();
 
     return make_pair(0, new_login);
-}
-
-
-//log out of a system
-int log_out(){
-    return 0;
 }
 
 
@@ -417,18 +437,11 @@ int update_offer(string user){
 //constist of non rejected and non waitlist offers
 int focus_group(string user){
     vector<vector<string>> data;
-    vector<vector<string>> focusGroup;
 
-    if (read_file("users_data/" + user + ".txt", data) != 0)
+    if (read_file("users_data/" + user + ".txt", data, {"Rejected", "Waitlist"}) != 0)
         return 1;
 
-    for (vector<string> row :data){
-        if(row[row.size() - 1] != "Rejected" && row[row.size() - 1] != "Waitlist"){
-            focusGroup.push_back(row);
-        }
-    }
-
-    format_table(focusGroup);
+    format_table(data);
 
     return 0;
 }
