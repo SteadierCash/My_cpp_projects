@@ -377,18 +377,17 @@ int update_offer(string user){
     if (read_file("users_data/" + user + ".txt", data) != 0)
         return 1;
 
-
+    if (data.size() == 0){
+        cout << "There is no data available" << endl;
+        return 1;
+    }
+    
     // Open a file for writing
     ofstream outputFile("users_data/" + user + ".txt");
 
     // Check if the file is opened successfully
     if (!outputFile.is_open()) {
         cout << "Error opening the file." << endl;
-        return 1;
-    }
-
-    if (data.size() == 0){
-        cout << "There is no data available" << endl;
         return 1;
     }
 

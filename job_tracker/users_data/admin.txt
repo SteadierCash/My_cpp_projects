@@ -1,12 +1,12 @@
 1;15.04.2024;Scylla;C++ Software Engineer;Waitlist
 2;23.04.2024;Amazon SA;Software Engineer;OA
 3;23.04.2024;Amazon;QA;OA
-4;23.04.2024;Google;Software Engineer;Waitlist
+4;27.04.2024;Amazon;Software Engineer;Rejected
 5;24.04.2024;Apple;Engineer;Test
 6;25.05.2024;Google;Developer;Waitlist
 7;15.04.2024;Scylla;C++ Software Engineer;Waitlist
 8;23.04.2024;Amazon SA;Software Engineer;OA
-9;23.04.2024;Amazon;QA;OA
+9;24.04.2024;Google;Test;Rejected
 10;25.05.2024;Amazon;Software Engineer;Rejected
 11;24.04.2024;Apple;Engineer;Test
 12;25.05.2024;Google;Developer;Waitlist

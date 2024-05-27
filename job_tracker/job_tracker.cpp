@@ -10,9 +10,7 @@ int main(){
     if (start_screen(current_user) == 2){
         return 0;
     }
-
-    // user_screen(current_user);
-
+    
     return 0;
 }
 
