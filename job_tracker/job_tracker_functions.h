@@ -77,7 +77,7 @@ int read_file(string filename, vector<vector<string>> &data){
     return 0;
 }
 
-//reading data from given file to given location
+//reading data from given file to given location with some restrictions
 int read_file(string filename, vector<vector<string>> &data, vector<string> doNotInclude){
     ifstream inputFile;
     inputFile.open(filename);
@@ -496,7 +496,7 @@ int user_screen(string user){
                 cout << "Goodbye!" << endl;
                 return 0;
             default:
-                cout << "Invalid input. Please enter a number between 1 and 3.\n" << endl;
+                cout << "Invalid input. Please enter a number between 1 and 7.\n" << endl;
                 break;
         }
     } while (true);
